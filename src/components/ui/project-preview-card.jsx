@@ -10,22 +10,30 @@ import {
 import { Button } from "./button";
 import { Skeleton } from "./skeleton";
 import Image from "next/image"
+import Link from "next/link";
 
     // title: "Project One",
     // desc: "Short blurb.",
     // img: "https://placehold.co/300.png",
     // link: "#"
 
-export default function ProjectPreviewCard({ project }) {
+export default function ProjectPreviewCard({ project, slug }) {
   return ( 
     <Card className="py-4 px-4 m-2">
       <h2 className="font-bold">{project.title}</h2>
-      <Image src={project.img} width="300" height="300"></Image>
+      <Image src={project.img} width="300" height="300" alt="project image" />
       {/* <Skeleton className="m-[300px] h-[300px]"/> */}
       <CardDescription>
-        { project.desc }
+        { project.description }
       </CardDescription>
-      <Button>Learn More</Button>
+      <div className="flex gap-2">
+          <Button asChild size="sm" variant="secondary">
+          <a href={project.link} target="_blank" rel="noreferrer">Open</a>
+          </Button>
+          <Button asChild size="sm">
+          <Link href={`/projects/${slug}`}>Learn More</Link>
+          </Button>
+      </div>
     </Card>
   );
 }

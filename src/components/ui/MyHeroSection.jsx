@@ -15,7 +15,7 @@ export default function MyHero() {
           <h1 className="font-black text-3xl">Neil Geniebla</h1>
           This is my portfolio that has super amazing projects and work experience please hire me thank you! ◡̈
           <CardContent>
-            <Image src="/placeholder-hero-img.jpg" width="2000" height="1000"/>
+            <Image src="/placeholder-hero-img.jpg" alt="hero image" width="2000" height="1000"/>
           </CardContent>
         </Card>
     );

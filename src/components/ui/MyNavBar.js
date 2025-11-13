@@ -12,7 +12,8 @@ import Link from "next/link"
 
 export default function MyNavBar() {
    return (
-   <NavigationMenu className="" viewport={false}>
+   <div className="flex justify-center bg-zinc-50 sticky top-0 font-sans dark:bg-black">
+   <NavigationMenu viewport={false}>
       <NavigationMenuList>
         <NavigationMenuItem>
             <NavigationMenuLink href="/">Home</NavigationMenuLink>
@@ -32,6 +33,7 @@ export default function MyNavBar() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+  </div>
 )
 }
 // NavigationMenu
