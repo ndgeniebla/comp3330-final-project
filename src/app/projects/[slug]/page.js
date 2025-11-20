@@ -1,15 +1,14 @@
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
-
 import { createSlug } from "@/lib/utils";
-
 import Image from "next/image";
-
 import { Skeleton } from "@/components/ui/skeleton";
+import { notFound } from "next/navigation";
 
 // import rest of components needed.
 
 export default async function ProjectDetailPage({ params }) {
     const { slug } = await params;
+    console.log("slug", slug)
 
     const projects = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`)
         .then((res) => res.json())
@@ -20,6 +19,9 @@ export default async function ProjectDetailPage({ params }) {
         });
 
     const project = projects.find((proj) => createSlug(proj.title) === slug);
+    
+    if (!project) return notFound();
+
     return (
         <div className="bg-zinc-50 max-w-2xl m-auto p-4">
             {/* <div>My Post's slug: {slug}</div> */}

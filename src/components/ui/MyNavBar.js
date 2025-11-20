@@ -29,6 +29,9 @@ export default function MyNavBar() {
             </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
+            <NavigationMenuLink href="/contact-me">Contact</NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
             <NavigationMenuLink href="/login">Login</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>

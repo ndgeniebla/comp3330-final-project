@@ -28,10 +28,10 @@ export default function ProjectPreviewCard({ project, slug }) {
       </CardDescription>
       <div className="flex gap-2">
           <Button asChild size="sm" variant="secondary">
-          <a href={project.link} target="_blank" rel="noreferrer">Open</a>
+            <a href={project.link} target="_blank" rel="noreferrer">Open</a>
           </Button>
           <Button asChild size="sm">
-          <Link href={`/projects/${slug}`}>Learn More</Link>
+            <Link href={`/projects/${slug}`}>Learn More</Link>
           </Button>
       </div>
     </Card>

@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { TypographyH1 } from "@/components/ui/typography";
+import { toast } from "sonner";
 // Import rest of the components needed from shadcn/ui
 
 const newProjectSchema = z.object({
@@ -43,24 +44,34 @@ export default function NewPage() {
     },
   });
 
-  function onSubmit(values) {
-    const formData = new FormData();
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("img", values.img);
-    formData.append("link", values.link);
-    formData.append("keywords", JSON.stringify(values.keywords || []));
+  async function onSubmit(values) {
+    try {
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("img", values.img);
+      formData.append("link", values.link);
+      formData.append("keywords", JSON.stringify(values.keywords || []));
 
-    // TODO: create backend POST endpoint to handle new project creation
-    fetch("/api/projects/new", {
-      method: "POST",
-      body: formData,
-    }).catch((error) => {
+      const promise = fetch("/api/projects/new", {
+        method: "POST",
+        body: formData,
+      }).then((res) => {
+        if (!res.ok) throw new Error("Failed to submit project");
+        return res;
+      });
+
+      await toast.promise(promise, {
+        loading: "Submitting project...",
+        success: "Project received successfully",
+        error: "Failed to submit project. Try again.",
+      });
+
+      // optional: reset form or navigate
+    } catch (error) {
       console.error("Error submitting new project: ", error);
-    });
-    // TODO: handle the response retunred and catch the possible error
-
-    // TODO: in future we will write the data to DB
+      // toast.promise already shows the error message
+    }
   }
 
   return (
