@@ -79,7 +79,7 @@ export default function EditProjectForm({ project = {}, uuid }) {
       });
 
       // navigate to project detail after success
-      router.push(`/projects/${uuid}`);
+      router.push(`/projects`);
     } catch (err) {
       console.error("Update project error:", err);
       // toast.promise already shows error

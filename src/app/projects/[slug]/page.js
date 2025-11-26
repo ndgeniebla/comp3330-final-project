@@ -23,6 +23,8 @@ export default async function ProjectDetailPage({ params }) {
         });
 
     const project = projects.find((proj) => createSlug(proj.title) === slug);
+    console.log("slug", slug);
+    console.log("project", project);
     
     if (!project) return notFound();
 

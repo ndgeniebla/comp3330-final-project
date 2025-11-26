@@ -38,7 +38,7 @@ export default function ProjectsPage() {
   }, [])
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center flex-wrap max-w-full m-auto">
     {Array.isArray(projects) && projects.map((p) => {
         const slug = createSlug(p.title);
         return (

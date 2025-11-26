@@ -75,7 +75,7 @@ export default function NewPage() {
   }
 
   return (
-    <>
+    <div className="max-w-3xl mx-auto p-6">
       <TypographyH1>Create New Project</TypographyH1>
       <div className="w-[50%]">
         <Form {...form}>
@@ -233,6 +233,6 @@ export default function NewPage() {
           </form>
         </Form>
       </div>
-    </>
+    </div>
   );
 }

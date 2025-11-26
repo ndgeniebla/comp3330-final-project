@@ -20,7 +20,7 @@ import ProjectControls from "./ProjectControls";
 
 export default function ProjectPreviewCard({ project, slug, user }) {
   return ( 
-    <Card className="py-4 px-4 m-2">
+    <Card className="py-4 px-4 m-2 max-w-[350px]">
       <h2 className="font-bold">{project.title}</h2>
       <Image src={project.img} width="300" height="300" alt="project image" />
       {/* <Skeleton className="m-[300px] h-[300px]"/> */}
@@ -35,7 +35,7 @@ export default function ProjectPreviewCard({ project, slug, user }) {
             <Link href={`/projects/${slug}`}>Learn More</Link>
           </Button>
       </div>
-      {user && <ProjectControls />}
+      {user && <ProjectControls projectId={project.id} slug={slug}/>}
     </Card>
   );
 }
