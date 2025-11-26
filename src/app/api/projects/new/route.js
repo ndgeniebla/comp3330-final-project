@@ -1,4 +1,14 @@
+import { auth0 } from "@/lib/auth0";
+import { insertProject } from "@/lib/db";
+
 export async function POST(req) {
+  const session = await auth0.getSession();
+  if (!session) {
+    return Response.json(
+      { ok: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
   try {
     const formData = await req.formData();
     const title = formData.get("title");
@@ -12,8 +22,8 @@ export async function POST(req) {
     // TODO: (recommended) validate here again with Zod
     // TODO: persist to DB (Prisma/Drizzle/etc.)
     // TODO: revalidatePath("/projects") after write (if using Next cache)
-
-    console.log({ project: { title, description, img, link, keywords } });
+    
+    insertProject({ title, description, img, link, keywords });
 
     return Response.json(
       { ok: true, project: { title, description, img, link, keywords } },
@@ -26,4 +36,4 @@ export async function POST(req) {
       { status: 400 }
     );
   }
-}
+};

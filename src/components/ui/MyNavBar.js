@@ -32,7 +32,7 @@ export default function MyNavBar() {
             <NavigationMenuLink href="/contact-me">Contact</NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-            <NavigationMenuLink href="/login">Login</NavigationMenuLink>
+            <NavigationMenuLink href="/auth/login">Login</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

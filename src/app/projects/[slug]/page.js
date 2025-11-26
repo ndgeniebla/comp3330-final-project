@@ -3,10 +3,14 @@ import { createSlug } from "@/lib/utils";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { notFound } from "next/navigation";
+import ProjectControls from "@/components/ui/ProjectControls";
+import { auth0 } from "@/lib/auth0";
 
 // import rest of components needed.
 
 export default async function ProjectDetailPage({ params }) {
+    const session = await auth0.getSession();
+
     const { slug } = await params;
     console.log("slug", slug)
 
@@ -39,6 +43,10 @@ export default async function ProjectDetailPage({ params }) {
             )}
 
             <TypographyP>{project.description}</TypographyP>
+            {session && 
+            <div className="border-t-2 mt-6 pt-4">
+                <ProjectControls projectId={project.id} slug={slug}/>
+            </div>}
         </div>
     );
 }

@@ -11,13 +11,14 @@ import { Button } from "./button";
 import { Skeleton } from "./skeleton";
 import Image from "next/image"
 import Link from "next/link";
+import ProjectControls from "./ProjectControls";
 
     // title: "Project One",
     // desc: "Short blurb.",
     // img: "https://placehold.co/300.png",
     // link: "#"
 
-export default function ProjectPreviewCard({ project, slug }) {
+export default function ProjectPreviewCard({ project, slug, user }) {
   return ( 
     <Card className="py-4 px-4 m-2">
       <h2 className="font-bold">{project.title}</h2>
@@ -34,6 +35,7 @@ export default function ProjectPreviewCard({ project, slug }) {
             <Link href={`/projects/${slug}`}>Learn More</Link>
           </Button>
       </div>
+      {user && <ProjectControls />}
     </Card>
   );
 }
