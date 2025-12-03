@@ -291,4 +291,122 @@ export async function deleteProject(id) {
   return mapRow(rows[0]);
 }
 
+// LAB 5 CODE
+const HERO_PLACEHOLDER_AVATAR = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
+const defaultHeroContent = {
+  avatar: HERO_PLACEHOLDER_AVATAR,
+  fullName: "...",
+  shortDescription: "...",
+  longDescription: "...",
+};
+
+export async function ensureHeroTable() {
+  await sql`
+    create table if not exists hero (
+      id uuid primary key,
+      avatar text not null default '',
+      full_name text not null,
+      short_description text not null check (char_length(short_description) <= 120),
+      long_description text not null,
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now()
+    );
+  `;
+  const [{ count }] = await sql`select count(*)::int as count from hero`;
+  if (Number(count) === 0) await seedHeroTable();
+}
+
+export async function getHero() {
+  await ensureHeroTable();
+  const [row] = await sql`
+    select id, avatar, full_name, short_description, long_description,
+           created_at as "createdAt", updated_at as "updatedAt"
+    from hero
+    order by created_at asc
+    limit 1;
+  `;
+  return row ? mapHeroRow(row) : null;
+}
+async function seedHeroTable() {
+  const id = randomUUID();
+  await sql`
+    INSERT INTO hero (id, avatar, full_name, short_description, long_description)
+    VALUES (
+      ${id}::uuid,
+      ${"https://picsum.photos/300"},
+      ${"Neil Geniebla"},
+      ${"Full-Stack Web Developer"},
+      ${"This is my portfolio that has super amazing projects and work experience please hire me thank you! ◡̈"}
+    )
+  `;
+}
+
+function mapHeroRow(row) {
+  return {
+    id: row.id,
+    avatar: row.avatar || HERO_PLACEHOLDER_AVATAR,
+    fullName: row.full_name || defaultHeroContent.fullName,
+    shortDescription: row.short_description || defaultHeroContent.shortDescription,
+    longDescription: row.long_description || defaultHeroContent.longDescription,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
+export async function upsertHero(updates = {}) {
+  await ensureHeroTable();
+  
+  const current = await getHero();
+
+  // Normalize and sanitize inputs
+  const avatar = updates.avatar?.trim() || current?.avatar || HERO_PLACEHOLDER_AVATAR;
+  const fullName = (updates.fullName || current?.fullName || defaultHeroContent.fullName).trim();
+  const shortDescription = (updates.shortDescription || current?.shortDescription || defaultHeroContent.shortDescription).trim();
+  const longDescription = (updates.longDescription || current?.longDescription || defaultHeroContent.longDescription).trim();
+
+  if (current) {
+    // UPDATE existing row
+    const [row] = await sql`
+      UPDATE hero
+      SET
+        avatar = ${avatar},
+        full_name = ${fullName},
+        short_description = ${shortDescription},
+        long_description = ${longDescription},
+        updated_at = now()
+      WHERE id = ${current.id}::uuid
+      RETURNING
+        id,
+        avatar,
+        full_name,
+        short_description,
+        long_description,
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+    `;
+    return mapHeroRow(row);
+  } else {
+    // INSERT new row
+    const id = randomUUID();
+    const [row] = await sql`
+      INSERT INTO hero (id, avatar, full_name, short_description, long_description)
+      VALUES (
+        ${id}::uuid,
+        ${avatar},
+        ${fullName},
+        ${shortDescription},
+        ${longDescription}
+      )
+      RETURNING
+        id,
+        avatar,
+        full_name,
+        short_description,
+        long_description,
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+    `;
+    return mapHeroRow(row);
+  }
+}
 export { fetchProjects as getProjects };
